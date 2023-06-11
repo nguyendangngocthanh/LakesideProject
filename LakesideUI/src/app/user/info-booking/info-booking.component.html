@@ -2,8 +2,8 @@
     <div class="card m-3">
         <div class="row no-gutters">
             <div class="col-md-4">
-                <img 
-                *ngIf="searchResult.urlImage" 
+                <img
+                *ngIf="searchResult.urlImage"
                         [src]="'https://localhost:7000/api/images/type/' + getFileNameFromUrl(searchResult.urlImage)"
 
                     class="card-img" alt="...">
@@ -16,6 +16,7 @@
                         <div class="col-md-6">
                             <h4 class="card-text">Số phòng : {{ searchResult.tenPhong }}</h4>
                             <p class="card-text">Thông tin : {{ searchResult.thongTin }}</p>
+                            <p class="card-text">Sức chứa : {{ searchResult.sucChua }} người</p>
                             <p class="card-text">Kích cỡ : {{ searchResult.kichCo }}</p>
                             <p class="card-text">Giá phòng : {{ searchResult.giaPhong | currency:'VND' }}</p>
                         </div>
@@ -37,7 +38,7 @@
                     height="57"> -->
                 <h2>Tiến hành đặt phòng</h2>
             </div>
-    
+
             <div class="row g-5">
                 <div class="col-md-5 col-lg-4 order-md-last">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -49,28 +50,28 @@
                             <div>
                                 <h6 class="my-0">Ngày đặt</h6>
                                 <small class="text-body-secondary">Bắt đầu</small>
-                            </div>       
+                            </div>
                             <span class="text-body-secondary">{{checkIn}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
                                 <h6 class="my-0">Ngày trả</h6>
                                 <small class="text-body-secondary">Kết thúc</small>
-                            </div>       
+                            </div>
                             <span class="text-body-secondary">{{checkOut}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
                                 <h6 class="my-0">Giá / Ngày</h6>
-                            </div>    
+                            </div>
                             <span class="text-body-secondary">{{ searchResult.giaPhong | currency:'VND' }}</span>
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
                                 <h6 class="my-0">Số ngày đặt</h6>
-                            </div>    
-                            <span class="text-body-secondary">{{days}} : Ngày</span>   
+                            </div>
+                            <span class="text-body-secondary">{{days}} : Ngày</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Tổng tiền</span>
@@ -95,7 +96,7 @@
                                 <div class="invalid-feedback">
                                     Nhập số điện thoại?
                                 </div>
-                            </div>  
+                            </div>
                             <div class="col-12">
                                 <label for="email" class="form-label">Email
                                     <!-- <span class="text-body-secondary">(Optional)</span> -->

@@ -17,19 +17,31 @@ namespace LakesideAPI.Controllers
         {
             _context = context;
         }
+        #region OKe 
 
-        [HttpGet("revenue/{fromDate}/{toDate}")]
-        public IActionResult SumRevenue(DateTime fromDate, DateTime toDate)
+        //Thông tin khách hàng đặt trong ngày   
+        [HttpGet("info-by-customer-day/{fulldateString}")]
+        public IActionResult TinhTongTienTheoKhachHangNgayX(string fulldateString)
         {
+            DateTime ngayX = DateTime.ParseExact(fulldateString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime ngayXNextDay = ngayX.AddDays(1);
+
             var hoaDons = _context.HoaDon
-                .Where(h => h.NgayDen >= fromDate && h.NgayDi <= toDate)
+                .Where(h => h.DatPhong.NgayDat >= ngayX && h.DatPhong.NgayDat < ngayXNextDay)
+                .GroupBy(h => new { h.DatPhong.TenKhachHang, h.DatPhong.SoDienThoai })
+                .Select(g => new
+                {
+                    TenKhachHang = g.Key.TenKhachHang,
+                    SoDienThoai = g.Key.SoDienThoai,
+                    SoLanDat = g.Count(),
+                    DoanhThu = g.Sum(h => h.TongTien)
+                })
+                .OrderByDescending(h => h.SoLanDat)
                 .ToList();
-
-            float tongTien = hoaDons.Sum(h => h.TongTien);
-
-            return Ok(tongTien);
+            return Ok(hoaDons);
         }
 
+        //Trả về tổng doanh thu trong tháng
         [HttpGet("revenue-in-month/{dateString}")]
         public IActionResult TinhTongTienTrongThang(string dateString)
         {
@@ -45,6 +57,7 @@ namespace LakesideAPI.Controllers
             return Ok(tongTien);
         }
 
+        //Trả về số lần đặt và doanh thu của từng phòng 
         [HttpGet("revenue-by-room/{dateString}")]
         public IActionResult TinhDoanhThuTheoPhongTrongThang(string dateString)
         {
@@ -66,32 +79,15 @@ namespace LakesideAPI.Controllers
             return Ok(hoaDons);
         }
 
-        [HttpGet("low-demand-room/{formDate}/{toDate}/{minimum}")]
-        public IActionResult ThongKePhongItDat(DateTime formDate, DateTime toDate, int minimum)
+        //Trả về mã phòng và số lượng đặt tương ứng trong tháng 
+        [HttpGet("quantity-ordered-in-a-month/{dateString}")]
+        public IActionResult ThongKePhongItDatThang(string dateString)
         {
-            var danhSachPhongItDat = _context.DatPhong
-                .Where(dp => dp.NgayNhan >= formDate && dp.NgayTra <= toDate)
-                .GroupBy(dp => dp.MaPhong)
-                .Where(group => group.Count() >= minimum)
-                .OrderBy(group => group.Count())
-                .Take(10)
-                .Select(group => new
-                {
-                    MaPhong = group.Key,
-                    SoLuongDat = group.Count()
-                })
-                .ToList();
+            DateTime fromDate = DateTime.ParseExact(dateString, "yyyy-MM", CultureInfo.InvariantCulture);
 
-            return Ok(danhSachPhongItDat);
-        }
-
-        [HttpGet("low-demand-room-month/{month}/{minimum}")]
-        public IActionResult ThongKePhongItDatThang(int month, int minimum)
-        {
             var danhSachPhongItDat = _context.DatPhong
-                .Where(hd => hd.NgayNhan.Month == month)
+                .Where(hd => hd.NgayNhan.Month == fromDate.Month && hd.NgayNhan.Year == fromDate.Year)
                 .GroupBy(hd => hd.MaPhong)
-                .Where(group => group.Count() >= minimum)
                 .OrderBy(group => group.Count())
                 .Take(10)
                 .Select(group => new
@@ -104,6 +100,7 @@ namespace LakesideAPI.Controllers
             return Ok(danhSachPhongItDat);
         }
 
+        //API cho chartJS   
         [HttpGet("revenue-by-month")]
         public IActionResult GetRevenueByMonth()
         {
@@ -127,6 +124,56 @@ namespace LakesideAPI.Controllers
             var data = new { labels, values };
 
             return Ok(data);
+        }
+
+        #endregion
+
+        public class BookingByCustomerResponse
+        {
+            public string TenKhachHang { get; set; }
+            public string SoDienThoai { get; set; }
+            public int SoLanDat { get; set; }
+            public List<BookingInfo> DanhSachDatPhong { get; set; }
+            public float DoanhThu { get; set; }
+        }
+
+        public class BookingInfo
+        {
+            public DateTime NgayDat { get; set; }
+            public DateTime NgayNhan { get; set; }
+            public DateTime NgayTra { get; set; }
+            public string TrangThai { get; set; }
+            public int MaPhong { get; set; }
+        }
+
+        //Thông tin khách hàng đặt phòng trong tháng    
+        [HttpGet("bookings-by-customer-in-month/{dateString}")]
+        public IActionResult TinhTongTienTrongThangBoiKhachHangg(string dateString)
+        {
+            DateTime fromDate = DateTime.ParseExact(dateString, "yyyy-MM", CultureInfo.InvariantCulture);
+            DateTime toDate = fromDate.AddMonths(1).AddDays(-1);
+            var hoaDons = _context.HoaDon
+                .Where(h => h.NgayDen >= fromDate && h.NgayDi <= toDate)
+                .GroupBy(h => new { h.DatPhong.TenKhachHang, h.DatPhong.SoDienThoai })
+                .Select(g => new BookingByCustomerResponse
+                {
+                    TenKhachHang = g.Key.TenKhachHang,
+                    SoDienThoai = g.Key.SoDienThoai,
+                    SoLanDat = g.Count(),
+                    DanhSachDatPhong = g.Select(h => new BookingInfo
+                    {
+                        NgayDat = h.DatPhong.NgayDat,
+                        NgayNhan = h.DatPhong.NgayNhan,
+                        NgayTra = h.DatPhong.NgayTra,
+                        TrangThai = h.DatPhong.TrangThai,
+                        MaPhong = h.DatPhong.MaPhong
+                    }).ToList(),
+                    DoanhThu = g.Sum(h => h.TongTien) // Tính toán trường doanh thu
+                })
+                .OrderByDescending(h => h.SoLanDat) // Sắp xếp theo số lần đặt giảm dần
+                .ToList();
+
+            return Ok(hoaDons);
         }
 
     }
