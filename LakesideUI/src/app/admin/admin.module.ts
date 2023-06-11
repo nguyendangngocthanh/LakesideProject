@@ -23,6 +23,8 @@ import { RefusedComponent } from './booking/refused/refused.component';
 import { AvailableRoomsComponent } from './room/available-rooms/available-rooms.component';
 import { AvailableByTypeComponent } from './room/available-by-type/available-by-type.component';
 import { TypeRoomComponent } from './type-room/type-room.component';
+import { InfoByCustommerDayComponent } from './stats/info-by-custommer-day/info-by-custommer-day.component';
+import { BookingsByCustommerInMonthComponent } from './stats/bookings-by-custommer-in-month/bookings-by-custommer-in-month.component';
 
 
 @NgModule({
@@ -45,7 +47,9 @@ import { TypeRoomComponent } from './type-room/type-room.component';
     RefusedComponent,
     AvailableRoomsComponent,
     AvailableByTypeComponent,
-    TypeRoomComponent
+    TypeRoomComponent,
+    InfoByCustommerDayComponent,
+    BookingsByCustommerInMonthComponent
   ],
   imports: [
     CommonModule,

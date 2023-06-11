@@ -19,7 +19,7 @@ namespace LakesideAPI.Controllers
         }
         #region OKe 
 
-        //Thông tin khách hàng đặt trong ngày   
+        // Thông tin khách hàng đặt trong ngày
         [HttpGet("info-by-customer-day/{fulldateString}")]
         public IActionResult TinhTongTienTheoKhachHangNgayX(string fulldateString)
         {
@@ -29,15 +29,24 @@ namespace LakesideAPI.Controllers
             var hoaDons = _context.HoaDon
                 .Where(h => h.DatPhong.NgayDat >= ngayX && h.DatPhong.NgayDat < ngayXNextDay)
                 .GroupBy(h => new { h.DatPhong.TenKhachHang, h.DatPhong.SoDienThoai })
-                .Select(g => new
+                .Select(g => new BookingByCustomerResponse
                 {
                     TenKhachHang = g.Key.TenKhachHang,
                     SoDienThoai = g.Key.SoDienThoai,
                     SoLanDat = g.Count(),
+                    DanhSachDatPhong = g.Select(h => new BookingInfo
+                    {
+                        NgayDat = h.DatPhong.NgayDat,
+                        NgayNhan = h.DatPhong.NgayNhan,
+                        NgayTra = h.DatPhong.NgayTra,
+                        TrangThai = h.DatPhong.TrangThai,
+                        MaPhong = h.DatPhong.MaPhong
+                    }).ToList(),
                     DoanhThu = g.Sum(h => h.TongTien)
                 })
                 .OrderByDescending(h => h.SoLanDat)
                 .ToList();
+
             return Ok(hoaDons);
         }
 
@@ -77,27 +86,6 @@ namespace LakesideAPI.Controllers
                 .ToList();
 
             return Ok(hoaDons);
-        }
-
-        //Trả về mã phòng và số lượng đặt tương ứng trong tháng 
-        [HttpGet("quantity-ordered-in-a-month/{dateString}")]
-        public IActionResult ThongKePhongItDatThang(string dateString)
-        {
-            DateTime fromDate = DateTime.ParseExact(dateString, "yyyy-MM", CultureInfo.InvariantCulture);
-
-            var danhSachPhongItDat = _context.DatPhong
-                .Where(hd => hd.NgayNhan.Month == fromDate.Month && hd.NgayNhan.Year == fromDate.Year)
-                .GroupBy(hd => hd.MaPhong)
-                .OrderBy(group => group.Count())
-                .Take(10)
-                .Select(group => new
-                {
-                    MaPhong = group.Key,
-                    SoLuongDat = group.Count()
-                })
-                .ToList();
-
-            return Ok(danhSachPhongItDat);
         }
 
         //API cho chartJS   

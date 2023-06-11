@@ -17,6 +17,8 @@ import { RefusedComponent } from './booking/refused/refused.component';
 import { AvailableRoomsComponent } from './room/available-rooms/available-rooms.component';
 import { AvailableByTypeComponent } from './room/available-by-type/available-by-type.component';
 import { TypeRoomComponent } from './type-room/type-room.component';
+import { BookingsByCustommerInMonthComponent } from './stats/bookings-by-custommer-in-month/bookings-by-custommer-in-month.component';
+import { InfoByCustommerDayComponent } from './stats/info-by-custommer-day/info-by-custommer-day.component';
 
 const routes: Routes = [
   {
@@ -58,6 +60,14 @@ const routes: Routes = [
       {
         path:'stats/low-demand-room-month',
         component: LowDemandRoomMonthComponent
+      },
+      {
+        path:'stats/booking-by-custommer',
+        component: BookingsByCustommerInMonthComponent
+      },
+      {
+        path:'stats/info-by-day',
+        component: InfoByCustommerDayComponent
       },
       {
         path:'booking/booked',

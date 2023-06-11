@@ -1,0 +1,71 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Thống kê khách hàng đặt phòng trong ngày</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+          <span data-feather="calendar" class="align-text-bottom"></span>
+          This week
+      </button>
+  </div>
+</div>
+<br>
+
+<form (submit)="getBookingsByCustommer()">
+  <div class="row">
+      <div class="col-md-3">
+          <label class="form-label" for="startDate">Chọn ngày:</label>
+          <input class="form-control" type="date" [(ngModel)]="month" name="month" required>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+          <button type="submit"  class="btn btn-primary">Tính doanh thu</button>
+      </div>
+  </div>
+</form>
+<br>
+<hr>
+
+<div class="card mb-3" *ngFor="let khachHang of infoCustommerInDay">
+  <div class="card-header">
+    <h5 class="card-title">{{ khachHang.tenKhachHang }}</h5>
+  </div>
+  <div class="card-body row">
+    <p class="card-text col-md-4"><strong>Số điện thoại:</strong> {{ khachHang.soDienThoai }}</p>
+    <p class="card-text col-md-4"><strong>Số lần đặt:</strong> {{ khachHang.soLanDat }}</p>
+    <p class="card-text col-md-4"><strong>Doanh thu:</strong> {{ khachHang.doanhThu | currency:'VND' }}</p>
+    <button class="btn btn-outline-none btn-outline-secondary" type="button" data-bs-toggle="collapse"
+      [attr.data-bs-target]="'#collapse-' + khachHang.soDienThoai" aria-expanded="false"
+      [attr.aria-controls]="'collapse-' + khachHang.soDienThoai">
+      Xem danh sách đặt phòng
+    </button>
+  </div>
+  <div [id]="'collapse-' + khachHang.soDienThoai" class="collapse">
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Ngày đặt</th>
+            <th scope="col">Ngày nhận</th>
+            <th scope="col">Ngày trả</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Phòng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let datPhong of khachHang.danhSachDatPhong">
+            <td>{{ datPhong.ngayDat | date:'yyyy-MM-dd'}}</td>
+            <td>{{ datPhong.ngayNhan | date:'yyyy-MM-dd' }}</td>
+            <td>{{ datPhong.ngayTra | date:'yyyy-MM-dd'}}</td>
+            <td [style.color]="getTrangThaiColor(datPhong.trangThai)">{{ datPhong.trangThai }}</td>
+            <td>Phòng: {{ datPhong.maPhong }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
