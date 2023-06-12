@@ -25,6 +25,7 @@ import { AvailableByTypeComponent } from './room/available-by-type/available-by-
 import { TypeRoomComponent } from './type-room/type-room.component';
 import { InfoByCustommerDayComponent } from './stats/info-by-custommer-day/info-by-custommer-day.component';
 import { BookingsByCustommerInMonthComponent } from './stats/bookings-by-custommer-in-month/bookings-by-custommer-in-month.component';
+import { BookingsByRoomInMonthComponent } from './stats/bookings-by-room-in-month/bookings-by-room-in-month.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { BookingsByCustommerInMonthComponent } from './stats/bookings-by-customm
     AvailableByTypeComponent,
     TypeRoomComponent,
     InfoByCustommerDayComponent,
-    BookingsByCustommerInMonthComponent
+    BookingsByCustommerInMonthComponent,
+    BookingsByRoomInMonthComponent
   ],
   imports: [
     CommonModule,

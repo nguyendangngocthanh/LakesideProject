@@ -164,5 +164,43 @@ namespace LakesideAPI.Controllers
             return Ok(hoaDons);
         }
 
+        public class RoomBookingInfo    
+        {
+            public DateTime NgayDat { get; set; }
+            public DateTime NgayNhan { get; set; }
+            public DateTime NgayTra { get; set; }
+            public string TrangThai { get; set; }
+            public string KhachHang { get; set; }
+            public string SoDienThoai { get; set; }
+        }
+
+        [HttpGet("bookings-by-room-in-month/{dateString}")]
+        public IActionResult TinhTongTienTrongThangBoiPhong(string dateString)
+        {
+            DateTime fromDate = DateTime.ParseExact(dateString, "yyyy-MM", CultureInfo.InvariantCulture);
+            DateTime toDate = fromDate.AddMonths(1).AddDays(-1);
+
+            var bookingsByRoom = _context.HoaDon
+                .Where(h => h.NgayDen >= fromDate && h.NgayDi <= toDate)
+                .GroupBy(h => h.DatPhong.MaPhong)
+                .Select(g => new
+                {
+                    MaPhong = g.Key,
+                    SoLanDat = g.Count(),
+                    DoanhThu = g.Sum(h => h.TongTien),
+                    DanhSachDatPhong = g.Select(h => new RoomBookingInfo
+                    {
+                        NgayDat = h.DatPhong.NgayDat,
+                        NgayNhan = h.DatPhong.NgayNhan,
+                        NgayTra = h.DatPhong.NgayTra,
+                        TrangThai = h.DatPhong.TrangThai,
+                        KhachHang = h.DatPhong.TenKhachHang,
+                        SoDienThoai = h.DatPhong.SoDienThoai
+                    }).ToList()
+                })
+                .ToList();
+
+            return Ok(bookingsByRoom);
+        }
     }
 }

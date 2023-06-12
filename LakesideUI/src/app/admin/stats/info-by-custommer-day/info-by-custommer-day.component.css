@@ -28,12 +28,14 @@
   color: #6c757d;
   background-color: transparent;
   border-color: #6c757d;
+  border-style : hidden!important;
 }
 
 .btn-outline-secondary:hover {
   color: #fff;
   background-color: #6c757d;
   border-color: #6c757d;
+  border-style : hidden!important;
 }
 
 .collapse {
@@ -42,4 +44,14 @@
 
 .table {
   margin-bottom: 0;
+}
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 30px;
 }

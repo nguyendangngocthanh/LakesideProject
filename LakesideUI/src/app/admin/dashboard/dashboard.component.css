@@ -8,7 +8,7 @@
 .sidebar-heading {
     font-size: 0.75rem;
     font-weight: 500;
-    color: #6c757d;
+    color: green;
     text-transform: uppercase;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .nav-link:hover {
-    color: #007bff;
+    color: red;
 }
 
 .nav-link .align-text-bottom {
