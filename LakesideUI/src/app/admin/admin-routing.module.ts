@@ -1,9 +1,9 @@
+import { NewsComponent } from './news/news.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatsComponent } from './stats/stats.component';
 import { RoomComponent } from './room/room.component';
-import { LoaiphongComponent } from './loaiphong/loaiphong.component';
 import { ReceiptComponent } from './receipt/receipt.component';
 import { BookingComponent } from './booking/booking.component';
 import { LowDemandRoomComponent } from './stats/low-demand-room/low-demand-room.component';
@@ -20,6 +20,8 @@ import { TypeRoomComponent } from './type-room/type-room.component';
 import { BookingsByCustommerInMonthComponent } from './stats/bookings-by-custommer-in-month/bookings-by-custommer-in-month.component';
 import { InfoByCustommerDayComponent } from './stats/info-by-custommer-day/info-by-custommer-day.component';
 import { BookingsByRoomInMonthComponent} from './stats/bookings-by-room-in-month/bookings-by-room-in-month.component';
+import { MenthodsComponent } from './menthods/menthods.component'
+import { FeedbackComponent } from './feedback/feedback.component'
 
 const routes: Routes = [
   {
@@ -45,6 +47,18 @@ const routes: Routes = [
       {
         path:'booking',
         component: BookingComponent
+      },
+      {
+        path:'news',
+        component: NewsComponent
+      },
+      {
+        path:'methods',
+        component: MenthodsComponent
+      },
+      {
+        path:'feedback',
+        component: FeedbackComponent
       },
       {
         path:'stats/revenue-in-range',

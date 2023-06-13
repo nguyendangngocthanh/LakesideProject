@@ -26,6 +26,10 @@ import { TypeRoomComponent } from './type-room/type-room.component';
 import { InfoByCustommerDayComponent } from './stats/info-by-custommer-day/info-by-custommer-day.component';
 import { BookingsByCustommerInMonthComponent } from './stats/bookings-by-custommer-in-month/bookings-by-custommer-in-month.component';
 import { BookingsByRoomInMonthComponent } from './stats/bookings-by-room-in-month/bookings-by-room-in-month.component';
+import { NewsComponent } from './news/news.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { MenthodsComponent } from './menthods/menthods.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 
 @NgModule({
@@ -51,12 +55,16 @@ import { BookingsByRoomInMonthComponent } from './stats/bookings-by-room-in-mont
     TypeRoomComponent,
     InfoByCustommerDayComponent,
     BookingsByCustommerInMonthComponent,
-    BookingsByRoomInMonthComponent
+    BookingsByRoomInMonthComponent,
+    NewsComponent,
+    MenthodsComponent,
+    FeedbackComponent,
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
+    CKEditorModule,
     AdminRoutingModule
   ]
 })

@@ -1,0 +1,64 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Quản lý tin tức / Đang phát triển</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group me-2">
+      <button type="button" class="btn btn-sm btn-outline-secondary">
+        Share
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary">
+        Export
+      </button>
+    </div>
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-secondary dropdown-toggle"
+    >
+      <span data-feather="calendar" class="align-text-bottom"></span>
+      This week
+    </button>
+  </div>
+</div>
+<div class="container mt-4">
+  <!-- article.component.html -->
+<div>
+  <h2>Bài viết</h2>
+  <form (ngSubmit)="saveArticle()">
+    <div class="row mb-3">
+    <div class="col-md-8">
+      <label class="form-label">Tiêu đề:</label>
+      <input class="form-control" type="text" [(ngModel)]="article.title" name="title">
+    </div>
+    <div class="col-md-4">
+      <label for="formFile" class="form-label">Hình ảnh</label>
+      <!-- <input class="form-control" type="file" id="formFile"> -->
+      <input class="form-control" type="text" [(ngModel)]="article.title" name="title">
+    </div>
+    <br>
+    <!-- <div>
+      <label>Nội dung:</label>
+      <ckeditor [(ngModel)]="article.content" name="content"></ckeditor>
+    </div> -->
+    <div class="col-md-12">
+      <label class="form-label">Nội dung:</label>
+      <textarea class="form-control" aria-label="With textarea"></textarea>
+    </div>
+    <div class="col-md-4">
+    <button  class="btn btn-primary mt-4" type="submit">Lưu</button>
+    </div>
+  </div>
+  </form>
+  <hr>
+  <h3>Danh sách bài viết:</h3>
+  <ul>
+    <li *ngFor="let a of articles">
+      <h4>{{ a.title }}</h4>
+      <div [innerHTML]="a.content"></div>
+      <button (click)="editArticle(a)">Sửa</button>
+      <button (click)="deleteArticle(a)">Xóa</button>
+    </li>
+  </ul>
+</div>
+
+</div>

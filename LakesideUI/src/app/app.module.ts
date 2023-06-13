@@ -10,6 +10,7 @@ import { SearchRoomService } from './user/services/search-room.service';
 import { RoomTypeService } from './user/services/room-type.service';
 import { LoaiphongService } from './admin/services/loaiphong.service';
 import { AuthenticationService } from './admin/services/authentication.service';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AuthenticationService } from './admin/services/authentication.service';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CKEditorModule
   ],
   providers: [SearchRoomService, RoomTypeService, LoaiphongService, AuthenticationService],
   bootstrap: [AppComponent]
